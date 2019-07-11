@@ -4,4 +4,6 @@ angular.module('test_app', ['test_module']).controller('controller_app', functio
 
 	$scope.manageObj.start($scope);		// Prepares the scope to use.
 
+	$scope.formHolder = {}; // need validation
+
 });

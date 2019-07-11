@@ -1,4 +1,4 @@
-angular.module('test_module',[]).factory('test_users', function($http,$timeout){
+angular.module('test_module',['bootstrap-growl']).factory('test_users', function($http,$timeout,growl){
 
 	function test_users(){			// The main function of your controller.
 
@@ -6,14 +6,22 @@ angular.module('test_module',[]).factory('test_users', function($http,$timeout){
 
 		self.start = function(scope){
 
+			scope.controls = {
+				ok: {btn: false, label: 'Save'},
+				cancel: {btn: false, label: 'Cancel'},
+			};
+
 			scope.userObj = {};		// Object.
 			scope.userObj.id = 0;	// Object default id value.
 
 			scope.dep_names = [];
 			scope.userObjs = [];	// Collection | Array of objects.
+
 			self.list(scope);
 			self.select(scope);
-		}
+
+			console.log(scope);
+		};
 
 		self.list = function(scope){
 
@@ -26,8 +34,9 @@ angular.module('test_module',[]).factory('test_users', function($http,$timeout){
 				
 			});
 
-		}
+		};
 
+	
 		self.select = function(scope){
 
 			$http({
@@ -38,9 +47,28 @@ angular.module('test_module',[]).factory('test_users', function($http,$timeout){
 			}, function onErr(res){
 				// Error.
 			});
-		}
+		};
+
+		function validate(scope) { //validation
+			
+			var controls = scope.formHolder.userObj.$$controls;
+			
+			angular.forEach(controls,function(elem,i) {
+				
+				if (elem.$$attr.$attr.required) elem.$touched = elem.$invalid;
+									
+			});
+			
+			return scope.formHolder.userObj.$invalid;
+			
+		};
 
 		self.save = function(scope){
+
+		if (validate(scope)){ 
+				growl.show('alert alert-danger',{from: 'top', amount: 55},'Please complete required fields.');
+				return;
+			};
 
 		if ((scope.userObj.firstname && scope.userObj.lastname)==null)
 			{
@@ -56,7 +84,7 @@ angular.module('test_module',[]).factory('test_users', function($http,$timeout){
 					data: scope.userObj
 				}).then(function onSave(res){
 
-					alert('Saved');
+					growl.show('alert alert-success',{from: 'top', amount: 55},'Success');
 
 					scope.userObj = {};				// Reset object to empty after saving.
 					scope.userObj.id = 0;			// Reset id value to 0 after saving.
@@ -69,7 +97,7 @@ angular.module('test_module',[]).factory('test_users', function($http,$timeout){
 
 			}
 
-		}
+		};
 
 		self.edit = function(scope,userObj){
 
@@ -91,7 +119,7 @@ angular.module('test_module',[]).factory('test_users', function($http,$timeout){
 					
 				})
 			}
-		}
+		};
 
 		self.delete = function(scope,userObj){
 
@@ -110,7 +138,7 @@ angular.module('test_module',[]).factory('test_users', function($http,$timeout){
 
 			});
 		}
-	}
+	};
 
 	return new test_users();		// Returns new value of a class.
 });

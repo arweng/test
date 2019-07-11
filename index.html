@@ -5,25 +5,35 @@
 </head>
 
 <link href="css/bootstrap.min.css" rel="stylesheet">
-<body ng-app='test_app' ng-controller='controller_app'>
 
+<style>
+	.error{
+		border-color: red;
+	}
+</style>
+<body ng-app='test_app' ng-controller='controller_app'>
 
 	<div class="container" style="width: 650px;">
 		<br>
 		<h1 align="center">Basic CRUD using AngularJS</h1>
-        <h1 align="center">Arweng</h1>
-		First Name
-		<input type="text" class='form-control' ng-model="userObj.firstname">
+        
+        <form name="formHolder.userObj" id="formHolder.userObj">
+			First Name
+			<input type="text" name="firstname" class='form-control' ng-model="userObj.firstname" ng-class="{'error': formHolder.userObj.firstname.$touched && formHolder.userObj.firstname.$invalid}" required>
+			<span class="text-danger" ng-show="formHolder.userObj.firstname.$touched && formHolder.userObj.firstname.$invalid">First Name is required</span>
 
-		<br><br>
-		Last Name
-		<input type="text" class='form-control' ng-model="userObj.lastname">
+			<br><br>
+			Last Name
+			<input type="text" name="lastname" class='form-control' ng-model="userObj.lastname" ng-class="{'error': formHolder.userObj.lastname.$touched && formHolder.userObj.lastname.$invalid}" required>
+			<span class="text-danger" ng-show="formHolder.userObj.lastname.$touched && formHolder.userObj.lastname.$invalid">Last Name is required</span>
 
-		<br><br>
-		Department Name
-		<select class='form-control' ng-model="userObj.dep_name">
-			<option ng-repeat="x in dep_names" value="{{x.dep_name}}">{{x.dep_name}}</option>
-		</select>
+			<br><br>
+			Department Name
+			<select class='form-control' name="dep_name" ng-model="userObj.dep_name" ng-class="{'error': formHolder.userObj.dep_name.$touched && formHolder.userObj.dep_name.$invalid}" required>
+				<option ng-repeat="x in dep_names" value="{{x.dep_name}}">{{x.dep_name}}</option>
+			</select>
+			<span class="text-danger" ng-show="formHolder.userObj.dep_name.$touched && formHolder.userObj.dep_name.$invalid">Department is required</span>
+		</form>
 
 		<br>
 		<button class="btn btn-primary" ng-click='manageObj.save(this)'>Save</button>
@@ -58,6 +68,8 @@
 
 	<script src="jquery/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
+	<script src="modules/bootbox.min.js"></script>
+    <script src="modules/jquery.bootstrap-growl.min.js"></script>
 
 	<script src="angular/angular.min.js"></script>
 	<script src="angular/angular-route.min.js"></script>
@@ -65,6 +77,7 @@
 	<script src="angular/ui-bootstrap-tpls-3.0.2.min.js"></script>
 
 	<script src="modules/users.js"></script>
+	<script src="modules/growl.js"></script>
 	<script src="controllers/users.js"></script>
 
 </body>
