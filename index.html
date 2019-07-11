@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Attepmt no 1: Saving data from database</title>
+</head>
+
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<body ng-app='test_app' ng-controller='controller_app'>
+
+
+	<div class="container" style="width: 650px;">
+		<br>
+		<h1 align="center">Basic CRUD using AngularJS</h1>
+
+		First Name
+		<input type="text" class='form-control' ng-model="userObj.firstname">
+
+		<br><br>
+		Last Name
+		<input type="text" class='form-control' ng-model="userObj.lastname">
+
+		<br><br>
+		Department Name
+		<select class='form-control' ng-model="userObj.dep_name">
+			<option ng-repeat="x in dep_names" value="{{x.dep_name}}">{{x.dep_name}}</option>
+		</select>
+
+		<br>
+		<button class="btn btn-primary" ng-click='manageObj.save(this)'>Save</button>
+
+		<br><br>
+		Search:<input class='form-control' type="text" ng-model="search">
+
+		<br><br>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>ID number</th>
+					<th>First Name</th>
+					<th>Last Name</th>
+					<th>School Department</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat='u in userObjs | filter: search'>
+					<td>{{u.id}}</td>
+					<td>{{u.firstname}}</td>
+					<td>{{u.lastname}}</td>
+					<td>{{u.dep_name}}</td>
+					<td><button class="btn btn-primary" ng-click='manageObj.edit(this,u)'>EDIT</button>
+						<button class="btn btn-danger" ng-click='manageObj.delete(this,u)' style="margin-left: 5px;">DELETE</button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+
+	<script src="jquery/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+
+	<script src="angular/angular.min.js"></script>
+	<script src="angular/angular-route.min.js"></script>
+	<script src="angular/angular-sanitize.min.js"></script>
+	<script src="angular/ui-bootstrap-tpls-3.0.2.min.js"></script>
+
+	<script src="modules/users.js"></script>
+	<script src="controllers/users.js"></script>
+
+</body>
+</html>
