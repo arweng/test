@@ -1,4 +1,4 @@
-angular.module('test_module',['bootstrap-growl']).factory('test_users', function($http,$timeout,growl){
+angular.module('test_module',['bootstrap-growl','bootstrap-modal']).factory('test_users', function($http,$timeout,growl,bootstrapModal){
 
 	function test_users(){			// The main function of your controller.
 
@@ -19,8 +19,26 @@ angular.module('test_module',['bootstrap-growl']).factory('test_users', function
 
 			self.list(scope);
 			self.select(scope);
+				
+			// instantiate datable
+			$timeout(function() {
+				$('#users').DataTable({
+					"ordering": true,
+					"processing": true
+				});	
+			},200);
+				
+		};
 
-			console.log(scope);
+		function validate(scope) { 	//validation
+			
+			var controls = scope.formHolder.userObj.$$controls;
+			angular.forEach(controls,function(elem,i) {
+				
+				if (elem.$$attr.$attr.required) elem.$touched = elem.$invalid;					
+			});
+			return scope.formHolder.userObj.$invalid;
+			
 		};
 
 		self.list = function(scope){
@@ -49,19 +67,6 @@ angular.module('test_module',['bootstrap-growl']).factory('test_users', function
 			});
 		};
 
-		function validate(scope) { //validation
-			
-			var controls = scope.formHolder.userObj.$$controls;
-			
-			angular.forEach(controls,function(elem,i) {
-				
-				if (elem.$$attr.$attr.required) elem.$touched = elem.$invalid;
-									
-			});
-			
-			return scope.formHolder.userObj.$invalid;
-			
-		};
 
 		self.save = function(scope){
 
@@ -123,21 +128,29 @@ angular.module('test_module',['bootstrap-growl']).factory('test_users', function
 
 		self.delete = function(scope,userObj){
 
-			if (scope.$id>2) scope = scope.$parent;
-
-
-			$http({
-				url: 'handlers/user-delete.php',
-				method: 'POST',
-				data: {id: [userObj.id]}		// Delete always read the value in array form.
-			}).then(function onDelete(res){
-
-				self.list(scope);
-
-			}, function onError(res){
-
-			});
-		}
+			var onOk = function () { //delete pop up
+				
+				if (scope.$id>2) scope = scope.$parent;
+				
+				$http({
+					url: 'handlers/user-delete.php',
+					method: 'POST',
+					data: {id: [userObj.id]}		// Delete always read the value in array form.
+				}).then(function onDelete(res){
+					
+					growl.show('alert alert-success',{from: 'top', amount: 55},'Success deleted');
+					self.list(scope);
+					
+					window.location.href = 'http://www.google.com';
+				}, function onError(res){
+					
+				});
+				
+			};
+			
+			bootstrapModal.confirm(scope,'Confirmation','Are you sure you want to delete this record?',onOk,function() {});
+			
+		};
 	};
 
 	return new test_users();		// Returns new value of a class.
