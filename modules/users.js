@@ -1,10 +1,10 @@
-angular.module('test_module',['bootstrap-growl','bootstrap-modal']).factory('test_users', function($http,$timeout,growl,bootstrapModal){
+angular.module('test_module',['bootstrap-growl','bootstrap-modal']).factory('test_users', function($http,$timeout,$compile,growl,bootstrapModal){
 
 	function test_users(){			// The main function of your controller.
 
 		var self = this;
 
-		self.start = function(scope){
+		self.start = function(scope) {
 
 			scope.controls = {
 				ok: {btn: false, label: 'Save'},
@@ -16,17 +16,17 @@ angular.module('test_module',['bootstrap-growl','bootstrap-modal']).factory('tes
 
 			scope.dep_names = [];
 			scope.userObjs = [];	// Collection | Array of objects.
+						
+			scope.btns = {
+				add: false,
+				cancel: {
+					control: false,
+					label: 'Cancel'
+				}
+			};
 
 			self.list(scope);
-			self.select(scope);
-				
-			// instantiate datable
-			$timeout(function() {
-				$('#users').DataTable({
-					"ordering": true,
-					"processing": true
-				});	
-			},200);
+			select(scope);
 				
 		};
 
@@ -40,22 +40,49 @@ angular.module('test_module',['bootstrap-growl','bootstrap-modal']).factory('tes
 			return scope.formHolder.userObj.$invalid;
 			
 		};
+		
+		self.list = function(scope) {
 
-		self.list = function(scope){
+			if (scope.$id>2) scope = scope.$parent;	
+
+			$('#content').html('Loading...');			
+
+			scope.btns.add = false;
+			scope.btns.cancel.label = 'Cancel';
 
 			$http({
 				url: 'handlers/user-list.php',
 				method: 'GET'					// Fetching purposes only.
-			}).then(function onSuccess(res){
-				scope.userObjs = res.data;		// Saves fetched data to the object.
+			}).then(function onSuccess(res) {
+				
+				scope.userObjs = res.data;	// Saves fetched data to the object.
+				
+				$('#content').load('lists/users.html', function() {
+					
+					$compile($('#content')[0])(scope);
+
+					// instantiate datable
+					$timeout(function() {
+						$('#users').DataTable({
+							"ordering": true,
+							"processing": true,
+							"lengthChange": false,
+							"searching": false,
+							"paginate": false,
+							"paging": false
+
+						});	
+					},500);					
+					
+				});				
+				
 			}, function onError(res){
 				
-			});
+			});	
 
-		};
-
+		};		
 	
-		self.select = function(scope){
+		function select(scope) {
 
 			$http({
 				url: 'handlers/user-option.php',
@@ -65,6 +92,7 @@ angular.module('test_module',['bootstrap-growl','bootstrap-modal']).factory('tes
 			}, function onErr(res){
 				// Error.
 			});
+			
 		};
 
 
@@ -78,7 +106,6 @@ angular.module('test_module',['bootstrap-growl','bootstrap-modal']).factory('tes
 		if ((scope.userObj.firstname && scope.userObj.lastname)==null)
 			{
 
-
 				alert('Fields Required');
 				
 			} else {
@@ -89,12 +116,13 @@ angular.module('test_module',['bootstrap-growl','bootstrap-modal']).factory('tes
 					data: scope.userObj
 				}).then(function onSave(res){
 
+					self.list(scope);
 					growl.show('alert alert-success',{from: 'top', amount: 55},'Success');
 
 					scope.userObj = {};				// Reset object to empty after saving.
 					scope.userObj.id = 0;			// Reset id value to 0 after saving.
 
-					self.list(scope);				// Refreshes the list.
+									// Refreshes the list.
 					
 				}, function onUnsave(res){
 					//error
@@ -104,31 +132,50 @@ angular.module('test_module',['bootstrap-growl','bootstrap-modal']).factory('tes
 
 		};
 
-		self.edit = function(scope,userObj){
-
+		self.user = function(scope,userObj) {					
+			
 			if (scope.$id>2) scope = scope.$parent;		// Value may go under parent, use to call value inside the parent.
 
-			if(userObj == null){				// When empty, set the object and id to empty.
+			scope.btns.add = true;
+
+			if(userObj == null) {			// When empty, set the object and id to empty.
 
 				scope.userObj = {};
 				scope.userObj.id = 0;
+				
+				scope.btns.cancel.label = 'Cancel';			
+				
 			} else {
+				
+				scope.btns.cancel.label = 'Close';
 
 				$http({
 					url: 'handlers/user-edit.php',
 					method: 'POST',
 					data: {id: userObj.id}
-				}).then(function onEdit(res){
+				}).then(function success(res) {
+
 					scope.userObj = res.data;
-				}, function onUnedit(res){
+
+				}, function error(res) {
 					
-				})
+				});
+				
 			}
+
+			$('#content').html('Loading...');
+			
+			$('#content').load('forms/user.html', function() {
+				
+				$compile($('#content')[0])(scope);				
+				
+			});			
+			
 		};
 
 		self.delete = function(scope,userObj){
 
-			var onOk = function () { //delete pop up
+			var onOk = function () {
 				
 				if (scope.$id>2) scope = scope.$parent;
 				
@@ -141,7 +188,6 @@ angular.module('test_module',['bootstrap-growl','bootstrap-modal']).factory('tes
 					growl.show('alert alert-success',{from: 'top', amount: 55},'Success deleted');
 					self.list(scope);
 					
-					window.location.href = 'http://www.google.com';
 				}, function onError(res){
 					
 				});

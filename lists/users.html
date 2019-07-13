@@ -1,0 +1,25 @@
+<br><br>
+Search:<input class='form-control' type="text" ng-model="search">
+
+<br><br>
+<table class="table table-striped" id="users">
+  <thead>
+	<tr>
+	  <th>ID number</th>
+	  <th>First Name</th>
+	  <th>Last Name</th>
+	  <th>School Department</th>
+	  <th>Actions</th>
+	</tr>
+  </thead>
+  <tbody>
+	<tr ng-repeat='u in userObjs | filter: search'>
+	  <td>{{u.id}}</td>
+	  <td>{{u.firstname}}</td>
+	  <td>{{u.lastname}}</td>
+	  <td>{{u.dep_name}}</td>
+	  <td><button class="btn btn-primary" ng-click='manageObj.user(this,u)'>EDIT</button>
+		<button class="btn btn-danger" ng-click='manageObj.delete(this,u)' style="margin-left: 5px;">DELETE</button></td>
+	</tr>
+  </tbody>
+</table>

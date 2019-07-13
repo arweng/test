@@ -1,0 +1,21 @@
+<form name="formHolder.userObj" id="formHolder.userObj">
+  First Name
+  <input type="text" name="firstname" class='form-control' ng-model="userObj.firstname" ng-class="{'is-invalid': formHolder.userObj.firstname.$touched && formHolder.userObj.firstname.$invalid}" required>
+  <span class="text-danger" ng-show="formHolder.userObj.firstname.$touched && formHolder.userObj.firstname.$invalid">First Name is required</span>
+
+  <br><br>
+  Last Name
+  <input type="text" name="lastname" class='form-control' ng-model="userObj.lastname" ng-class="{'is-invalid': formHolder.userObj.lastname.$touched && formHolder.userObj.lastname.$invalid}" required>
+  <span class="text-danger" ng-show="formHolder.userObj.lastname.$touched && formHolder.userObj.lastname.$invalid">Last Name is required</span>
+
+  <br><br>
+  Department Name
+  <select class='form-control' name="dep_name" ng-model="userObj.dep_name" ng-class="{'is-invalid': formHolder.userObj.dep_name.$touched && formHolder.userObj.dep_name.$invalid}" required>
+	<option ng-repeat="x in dep_names" value="{{x.dep_name}}">{{x.dep_name}}</option>
+  </select>
+  <span class="text-danger" ng-show="formHolder.userObj.dep_name.$touched && formHolder.userObj.dep_name.$invalid">Department is required</span>
+</form>
+
+<br>
+<button class="btn btn-primary" ng-click="manageObj.save(this)">Save</button>
+<button class="btn btn-primary" ng-click="manageObj.list(this)">{{btns.cancel.label}}</button>

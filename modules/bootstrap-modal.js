@@ -7,7 +7,7 @@ angular.module('bootstrap-modal',[]).service('bootstrapModal', function($compile
 			message: content,
 			buttons: {
 				confirm: {
-					label: 'Ok',
+					label: 'Okay',
 					className: 'btn btn-primary'
 				},				
 				cancel: {

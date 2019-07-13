@@ -1,4 +1,4 @@
-angular.module('bootstrap-modal',[]).service('bootstrapModal', function($compile,$timeout) {
+angular.module('bootstrap-modal',[]).factory('bootstrapModal', function($compile,$timeout) {
 
 	this.confirm = function(scope,title,content,onOk,onCancel) {
 		
@@ -7,7 +7,7 @@ angular.module('bootstrap-modal',[]).service('bootstrapModal', function($compile
 			message: content,
 			buttons: {
 				cancel: {
-					label: 'Close',
+					label: 'Cancel',
 					className: 'btn-danger move-right'
 				},
 				confirm: {

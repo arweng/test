@@ -18,14 +18,16 @@
   <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
   
   <!-- Datatables -->
-    <link href="vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
     <link href="vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
     <link href="vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
     <link href="vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
-    <link href="vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+    <link href="vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet"> -->
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin.css" rel="stylesheet">
+  <link href="angular/modules/bootbox/bs4-fix.css" rel="stylesheet">
+  <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
 
 </head>
 
@@ -69,53 +71,9 @@
       <div class="container">
         <br>
         <!-- <h1 align="center">Basic CRUD using AngularJS</h1> -->
-          
-        <form name="formHolder.userObj" id="formHolder.userObj">
-          First Name
-          <input type="text" name="firstname" class='form-control' ng-model="userObj.firstname" ng-class="{'error': formHolder.userObj.firstname.$touched && formHolder.userObj.firstname.$invalid}" required>
-          <span class="text-danger" ng-show="formHolder.userObj.firstname.$touched && formHolder.userObj.firstname.$invalid">First Name is required</span>
-
-          <br><br>
-          Last Name
-          <input type="text" name="lastname" class='form-control' ng-model="userObj.lastname" ng-class="{'error': formHolder.userObj.lastname.$touched && formHolder.userObj.lastname.$invalid}" required>
-          <span class="text-danger" ng-show="formHolder.userObj.lastname.$touched && formHolder.userObj.lastname.$invalid">Last Name is required</span>
-
-          <br><br>
-          Department Name
-          <select class='form-control' name="dep_name" ng-model="userObj.dep_name" ng-class="{'error': formHolder.userObj.dep_name.$touched && formHolder.userObj.dep_name.$invalid}" required>
-            <option ng-repeat="x in dep_names" value="{{x.dep_name}}">{{x.dep_name}}</option>
-          </select>
-          <span class="text-danger" ng-show="formHolder.userObj.dep_name.$touched && formHolder.userObj.dep_name.$invalid">Department is required</span>
-        </form>
-
-        <br>
-        <button class="btn btn-primary" ng-click='manageObj.save(this)'>Save</button>
-
-        <br><br>
-        Search:<input class='form-control' type="text" ng-model="search">
-
-        <br><br>
-        <table class="table table-striped" id="users">
-          <thead>
-            <tr>
-              <th>ID number</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>School Department</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat='u in userObjs | filter: search'>
-              <td>{{u.id}}</td>
-              <td>{{u.firstname}}</td>
-              <td>{{u.lastname}}</td>
-              <td>{{u.dep_name}}</td>
-              <td><button class="btn btn-primary" ng-click='manageObj.edit(this,u)'>EDIT</button>
-                <button class="btn btn-danger" ng-click='manageObj.delete(this,u)' style="margin-left: 5px;">DELETE</button></td>
-            </tr>
-          </tbody>
-        </table>
+		<button class="btn btn-primary" ng-click="manageObj.user(this,null)" ng-disabled="btns.add">Add</button>
+		<hr>
+		<div id="content"></div>
       </div>
       <!-- Sticky Footer -->
 	  
@@ -134,10 +92,10 @@
   <!-- /#wrapper -->
 
   <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top">
+  <!-- <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-
+ -->
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -146,7 +104,7 @@
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
   <!-- Page level plugin JavaScript-->
-  <script src="vendor/chart.js/Chart.min.js"></script>
+  <!-- <script src="vendor/chart.js/Chart.min.js"></script> -->
   <script src="vendor/datatables/jquery.dataTables.js"></script>
   <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
 
@@ -155,10 +113,10 @@
 
   <!-- Demo scripts for this page-->
   <script src="js/demo/datatables-demo.js"></script>
-  <script src="js/demo/chart-area-demo.js"></script>
+  <!-- <script src="js/demo/chart-area-demo.js"></script> -->
   
 	<!-- Datatables -->
-	<script src="vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+	<!-- <script src="vendors/datatables.net/js/jquery.dataTables.min.js"></script>
 	<script src="vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 	<script src="vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
 	<script src="vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
@@ -170,9 +128,8 @@
 	<script src="vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
 	<script src="vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
 	<script src="vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
-
+ -->
   <script src="modules/bootbox.js"></script>
-  <script src="modules/bootbox.min.js"></script>
   <script src="modules/jquery.bootstrap-growl.min.js"></script>
 
   <script src="angular/angular.min.js"></script>
